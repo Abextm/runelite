@@ -27,8 +27,10 @@ package net.runelite.client.plugins.config;
 
 import java.awt.Dimension;
 import java.awt.image.BufferedImage;
+import java.util.List;
 import javax.swing.ImageIcon;
 import javax.swing.JToggleButton;
+import net.runelite.client.plugins.Plugin;
 import net.runelite.client.util.ImageUtil;
 import net.runelite.client.util.SwingUtil;
 
@@ -51,12 +53,32 @@ class PluginToggleButton extends JToggleButton
 		));
 	}
 
-	public PluginToggleButton()
+	public PluginToggleButton(List<Plugin> conflicts)
 	{
 		super(OFF_SWITCHER);
 		setSelectedIcon(ON_SWITCHER);
 		SwingUtil.removeButtonDecorations(this);
 		setPreferredSize(new Dimension(25, 0));
-		SwingUtil.addModalTooltip(this, "Disable plugin", "Enable plugin");
+
+		String conflitString = "";
+		if (conflicts != null && !conflicts.isEmpty())
+		{
+			StringBuilder sb = new StringBuilder("<br>Conflicts with ");
+			for (int i = 0; i < conflicts.size() - 2; i++)
+			{
+				sb.append(conflicts.get(i).getName());
+				sb.append(", ");
+			}
+			if (conflicts.size() > 2)
+			{
+				sb.append(conflicts.get(conflicts.size() - 2).getName());
+				sb.append(" and ");
+			}
+
+			sb.append(conflicts.get(conflicts.size() - 1).getName());
+			conflitString = sb.toString();
+		}
+
+		SwingUtil.addModalTooltip(this, "Disable plugin", "<html>Enable plugin" + conflitString);
 	}
 }

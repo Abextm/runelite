@@ -209,7 +209,8 @@ class PluginListPanel extends PluginPanel
 						descriptor.tags(),
 						plugin,
 						config,
-						configDescriptor);
+						configDescriptor,
+						pluginManager.conflictsForPlugin(plugin));
 				})
 		)
 			.map(desc ->
